@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { Landing, Register, Dashboard, Error } from './components/index'
+import { Landing, Register, Dashboard, Error } from './pages/index'
 // import styled from 'styled-components';
 
 
