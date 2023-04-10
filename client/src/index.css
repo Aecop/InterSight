@@ -195,7 +195,7 @@ ul {
   letter-spacing: var(--letterSpacing);
 }
 
-.alert-danger {
+.alert-error {
   color: var(--red-dark);
   background: var(--red-light);
 }

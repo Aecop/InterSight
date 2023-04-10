@@ -2,7 +2,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import Wrapper from '../../assets/wrappers/Register.js';
 import logo from '../../assets/img/logo.png';
-import { FormRow } from '../index';
+import { FormRow, Alert } from '../index';
+import { useAppContext } from '../../context/appContext.js';
 
 
 const initialState = {
@@ -10,34 +11,48 @@ const initialState = {
     email: '',
     password: '',
     member: true,
+   
 };
 
 const Register = () => {
     const [values, setValues] = useState(initialState)
-
+    const { isLoading, showAlert } = useAppContext();
+    const toggleMember = () => {
+        setValues({...values, member:!values.member})
+    };
 
     const handleChange = (e) => {
         console.log(e.target);
-    }
+    };
 
     const onSubmit = (e) => {
         e.preventDefault();
         console.log(e.target);
-    }
+    };
 
   return (
     <Wrapper className='full-page'>
         <form className='form' onSubmit={onSubmit}>
             <img className='logo' src={logo} alt='logo'/>
             <h3>
-                Login
+                {values.member ? "Log In!" : "Register!"}
             </h3>
-            <FormRow type='text' name='name' value={values.name} handleChange={handleChange} />
+            {showAlert && <Alert />}
+            {!values.member && (
+                <FormRow type='text' name='name' value={values.name} handleChange={handleChange} />
+            )}
+            
             <FormRow type='email' name='email' value={values.email} handleChange={handleChange} />
             <FormRow type='password' name='password' value={values.password} handleChange={handleChange} />   
             <button type="submit" className='btn btn-block'>
                 Submit
             </button>
+            <p>
+                {values.member?'Not a member?':'Already a member?'}
+                <button type='button' onClick={toggleMember} className='member-btn'>
+                    {values.member?'Register':'Login'}
+                </button>
+            </p>
         </form>
     </Wrapper>
   )
