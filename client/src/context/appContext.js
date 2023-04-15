@@ -115,6 +115,10 @@ const AppProvider = ({children}) => {
     const logoutUser = () => {
         dispatch({type:LOGOUT_USER});
         removeUserFromLocalStorage();
+    };
+
+    const updateUser = async (currentUser) => {
+        console.log(currentUser);
     }
 
     return(
