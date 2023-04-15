@@ -17,6 +17,7 @@ import {
     TOGGLE_SIDEBAR,
     LOGOUT_USER
 } from './action';
+import { config } from 'dotenv';
 
 const token = localStorage.getItem('token');
 const user = localStorage.getItem('user');
@@ -36,11 +37,39 @@ const initialState = {
 
 
 
-const AppContext = React.createContext()
+const AppContext = React.createContext();
 
 const AppProvider = ({children}) => {
     const [state, dispatch] = useReducer(reducer, initialState);
     
+    const authFetch = axios.create({
+        baseURL: '/api/v1',
+        
+    });
+
+    // Request
+    authFetch.interceptors.request.use((config) => {
+        config.headers['Authorization'] = `Bearer ${state.token}`;
+        return config
+    }, 
+    (error) => {
+        return Promise.reject(error);
+    });
+
+    //Response
+    authFetch.interceptors.response.use((response) => {
+        config.headers['Authorization'] = `Bearer ${state.token}`;
+        return response
+    }, 
+    (error) => {
+        console.log(error.response)
+        if(error.response.status === 401){
+            console.log('Auth Error')
+        }
+        return Promise.reject(error);
+    });
+
+
     const displayAlert = () => {
         dispatch({type:DISPLAY_ALERT})
         clearAlert();
@@ -118,11 +147,16 @@ const AppProvider = ({children}) => {
     };
 
     const updateUser = async (currentUser) => {
-        console.log(currentUser);
-    }
+        try {
+            const {data} = await authFetch.patch('/auth/updateUser', currentUser)
+            console.log(data)
+        }catch (error){
+            console.log(error)
+        };
+    };
 
     return(
-        <AppContext.Provider value={{...state, displayAlert, registerUser, loginUser, setupUser, toggleSidebar, logoutUser }}>
+        <AppContext.Provider value={{...state, displayAlert, registerUser, loginUser, setupUser, toggleSidebar, logoutUser, updateUser }}>
             {children} 
         </AppContext.Provider>
     )
