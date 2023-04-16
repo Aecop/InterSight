@@ -15,7 +15,15 @@ import {
     SETUP_USER_SUCCESS,
     SETUP_USER_ERROR,
     TOGGLE_SIDEBAR,
-    LOGOUT_USER
+    LOGOUT_USER,
+    UPDATE_USER_BEGIN,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_ERROR,
+    HANDLE_CHANGE,
+    CLEAR_VALUES,
+    CREATE_JOB_BEGIN,
+    CREATE_JOB_SUCCESS,
+    CREATE_JOB_ERROR
 } from './action';
 
 const token = localStorage.getItem('token');
@@ -30,8 +38,16 @@ const initialState = {
     user: user? JSON.parse(user) : null,
     token: token,
     userLocation: userLocation || '',
+    showSidebar: false,
+    isEditing: false,
+    editJobId: '',
+    position: '',
+    company: '',
     jobLocation: userLocation || '',
-    showSidebar: false
+    jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
+    jobType: 'full-time',
+    statusOptions: ['interview', 'declined', 'pending'],
+    status: 'pending'
 };
 
 
@@ -62,7 +78,7 @@ authFetch.interceptors.request.use((config) => {
  (error) => {
     console.log(error.response);
     if(error.response.status === 401){
-        console.log('Auth error')
+        logoutUser();
     };
  });
 
@@ -145,18 +161,49 @@ authFetch.interceptors.request.use((config) => {
     };
 
     const updateUser = async (currentUser) => {
+        dispatch({type:UPDATE_USER_BEGIN})
         try {
             const { data } = await authFetch.patch(
-                '/auth/updateUser', currentUser
-            )
-            console.log(data)
+                '/auth/updateUser', currentUser)
+            const {user, location, token} = data;
+            dispatch({type: UPDATE_USER_SUCCESS, payload: {user, location, token}})
+            addUserToLocalStorage({user, location, token});
+            
         } catch (error) {
-            console.log(error.response)
+            if(error.response.status !== 401){
+                dispatch({type:UPDATE_USER_ERROR, payload:{msg:error.response.data.msg}})
+
+            }
         }
-    }
+        clearAlert();
+    };
+
+    const handleChange = ({name, value}) => {
+        dispatch({type:HANDLE_CHANGE, payload: {name, value}})
+    };
+
+    const clearValues = () => {
+        dispatch({type: CLEAR_VALUES})
+    };
+
+    const createJob = async () => {
+        dispatch({type:CREATE_JOB_BEGIN});
+        try {
+            const {position, company, jobLocation, jobType, status} = state
+            await authFetch.post('/jobs', {
+                position, company, jobLocation, jobType, status
+            });
+            dispatch({type:CREATE_JOB_SUCCESS});
+            dispatch({type: CLEAR_VALUES})
+        }catch (error) {
+            if(error.response.status === 401) return
+            dispatch({type:CREATE_JOB_ERROR, payload:{ msg: error.response.data.msg}})
+        }
+        clearAlert();
+    };
 
     return(
-        <AppContext.Provider value={{...state, displayAlert, registerUser, loginUser, setupUser, toggleSidebar, logoutUser, updateUser }}>
+        <AppContext.Provider value={{...state, displayAlert, registerUser, loginUser, setupUser, toggleSidebar, logoutUser, updateUser, handleChange, clearValues, createJob }}>
             {children} 
         </AppContext.Provider>
     )
