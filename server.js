@@ -8,7 +8,7 @@ import errorHandler from './middleware/error-handler.js';
 import connectDB from './db/connect.js';
 import authRouter from './routes/authRouter.js';
 import jobRouter from './routes/jobsRouter.js';
-import authenticateUser from './middleware/auth.js'
+import authenticateUser from './middleware/auth.js';
 
 dotenv.config();
 

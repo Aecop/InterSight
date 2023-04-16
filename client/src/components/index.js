@@ -6,6 +6,9 @@ import FormRow from './FormRow';
 import FormRowSelect from "./FormRowSelect";
 import SearchContainer from "./SearchContainer";
 import JobsContainer from "./JobsContainer";
+import StatsContainer from "./StatsContainer";
+import ChartsContainer from "./ChartsContainer";
+import Loading from './Loading';
 
 
 
@@ -17,5 +20,8 @@ export {
     FormRow,
     FormRowSelect,
     SearchContainer,
-    JobsContainer
+    JobsContainer,
+    StatsContainer,
+    ChartsContainer,
+    Loading
 }

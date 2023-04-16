@@ -1,3 +1,4 @@
+
 import {
      DISPLAY_ALERT, 
      CLEAR_ALERT, 
@@ -22,7 +23,13 @@ import {
      CREATE_JOB_ERROR,
      GET_JOBS_BEGIN,
      GET_JOBS_SUCCESS,
-     SET_EDIT_JOB
+     SET_EDIT_JOB,
+     DELETE_JOB_BEGIN,
+     EDIT_JOB_BEGIN,
+     EDIT_JOB_SUCCESS,
+     EDIT_JOB_ERROR,
+     SHOW_STATS_BEGIN,
+     SHOW_STATS_SUCCESS
     } from "./action";
 import { initialState } from "./appContext";
 
@@ -208,25 +215,71 @@ const reducer = (state, action) => {
             totalJobs: action.payload.totalJobs,
             numOfPages: action.payload.numOfPages
         }
+    }
+
+    if (action.type === SET_EDIT_JOB) {
+        const job = state.jobs.find((job) => job._id === action.payload.id );
+        const { _id, position, company, jobLocation, jobType, status } = job;
+        return {
+          ...state,
+          isEditing: true,
+          editJobId: _id,
+          position,
+          company,
+          jobLocation,
+          jobType,
+          status,
+        };
+      };
+
+    if(action.type === DELETE_JOB_BEGIN){
+        return{...state, isLoading: true}
     };
 
-    if(action.type === SET_EDIT_JOB){
-        
-        console.log(action)
-        console.log(state.jobs)
-        const job = state.jobs.find((job) => job._id === state.payload.id)
-        const {_id, position, company, jobLocation, jobType, status} = job
+    if(action.type === EDIT_JOB_BEGIN){
+        return {
+            ...state, 
+            isLoading: false, 
+        }
+    };
+
+    if(action.type === EDIT_JOB_SUCCESS){
+        return {
+            ...state, 
+            isLoading: false, 
+            showAlert: true,
+            alerType: 'success',
+            alertText: 'Job Updated!'
+        }
+    };
+
+    if(action.type === EDIT_JOB_ERROR){
+        return {
+            ...state, 
+            isLoading: false, 
+            showAlert: true,
+            alerType: 'error',
+            alertText: action.payload.msg
+        }
+    };
+
+    if(action.type === SHOW_STATS_BEGIN){
         return {
             ...state,
-            isEditing: true,
-            editJobId: _id,
-            position,
-            company,
-            jobLocation,
-            jobType,
-            status
+            isLoading: true,
+            showAlert: false
         }
-    }
+    };
+
+    if (action.type === SHOW_STATS_SUCCESS){
+        return {
+            ...state,
+            isLoading: false,
+            stats: action.payload.stats,
+            monthlyStats: action.payload.monthlyStats
+        }
+    };
+
 
     if(action.type === TOGGLE_SIDEBAR){
         return {...state, showSidebar:!state.showSidebar}
