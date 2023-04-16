@@ -1,5 +1,5 @@
 
-import React, { useState, useReducer, useContext } from 'react';
+import React, {  useReducer, useContext } from 'react';
 import reducer from './reducer';
 import axios from 'axios'
 import { 
@@ -219,10 +219,15 @@ authFetch.interceptors.request.use((config) => {
     };
 
     const getJobs = async () => {
-        let url = `/jobs`
+        const { page, search, searchStatus, searchType, sort } = state;
+        let url = `/jobs`;
+    if (search) {
+      url = url + `&search=${search}`;
+    }
         dispatch({type:GET_JOBS_BEGIN})
         try {
             const {data} = await authFetch.get(url)
+            console.log(data)
             const {jobs, totalJobs, numOfPages } = data;
             dispatch({
                 type: GET_JOBS_SUCCESS,
@@ -231,8 +236,8 @@ authFetch.interceptors.request.use((config) => {
                 }
             })
         }catch (error) {
-            // logoutUser();
-            console.log(error.response);
+            logoutUser();
+            
         }
         clearAlert()
     };
@@ -263,7 +268,7 @@ authFetch.interceptors.request.use((config) => {
             await authFetch.delete(`/jobs/${jobId}`)
             getJobs();
         } catch (error) {
-            console.log(error.message)
+            logoutUser();
         }
     };
 
@@ -276,7 +281,7 @@ authFetch.interceptors.request.use((config) => {
                 monthlyStatus: data.monthlyStatus
             }})
         } catch (error){
-            console.log(error)
+            logoutUser()
         }
     }
 

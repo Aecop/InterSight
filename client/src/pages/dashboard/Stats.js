@@ -3,10 +3,10 @@ import { useAppContext } from '../../context/appContext';
 import { StatsContainer, Loading, ChartsContainer } from '../../components';
 
 const Stats = () => {
-  const {showStats, isLoading, monthlyStatus} = useAppContext();
+  const {showStats, isLoading, monthlyStatus} = useAppContext(); // eslint-disable-next-line
 
   useEffect(() =>{
-    showStats()
+    showStats() // eslint-disable-next-line
   }, [])
 
   if(isLoading){
