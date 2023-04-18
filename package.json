@@ -19,9 +19,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Aecop/InterSight/issues"
-  },
   "homepage": "https://main--legendary-kangaroo-599601.netlify.app/",
   "devDependencies": {
     "concurrently": "^8.0.1",
