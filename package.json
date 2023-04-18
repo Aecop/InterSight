@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/Aecop/InterSight/issues"
   },
-  "homepage": "https://github.com/Aecop/InterSight#readme",
+  "homepage": "https://main--legendary-kangaroo-599601.netlify.app/",
   "devDependencies": {
     "concurrently": "^8.0.1",
     "nodemon": "^2.0.22"
