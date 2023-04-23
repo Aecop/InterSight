@@ -9,6 +9,12 @@ const Wrapper = styled.main`
     display: flex;
     align-items: center;
   }
+
+  .link-site{
+    display:flex;
+    flex: inline-flex;
+    gap: 2rem;
+  }
   .page {
     min-height: calc(100vh - var(--nav-height));
     display: grid;

@@ -29,7 +29,26 @@ const Landing = () => {
              Login or Signup! <AiOutlineArrowRight/>
           </Link>
         </div>
+        
         <img src={sidelogo} alt='Side logo' className='img main-img'/>
+        <div>
+          <h4>About owner of the application Joon Ruiz</h4>
+          <p>
+            Developer Joon Ruiz is inspiring Full Stack devloper who want to create an web application to help user. 
+          
+          </p>
+          <p>
+          (I want to help upcoming future job seekers to use the this web app and get much help as they need from this application.)
+          </p>
+          <h4>
+            For Futher question or advice, please reach out to Joon Ruiz
+          </h4>
+          <div className='link-site'>
+            <a href='https://github.com/Aecop'>Github</a>
+            <a href='https://www.linkedin.com/in/joon-ruiz-967611201/'>Linkedin</a>
+            <a href='joonruiz08@gmail.com'>Email</a>
+          </div>
+        </div>
       </div>
     </Wrapper>
   )
