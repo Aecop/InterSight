@@ -24,7 +24,7 @@ https://intersight.onrender.com
   ## Description
   This is MERN Stack project InterSight. It is to help people who are seeking job from keeping interview orgainzed in a matter so that user can track interview without getting confused about dates and status of the interview. 
 
-  User is availble to direct self to the published website at :
+  User is availble to direct self to the published website at : https://intersight.onrender.com (At the moment, it is simple project. Feel free to create random username and password for testing!)
 
 
 
